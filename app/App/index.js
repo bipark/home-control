@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container, Content, Header, Left, Right, Body, Title, Button, Grid, Col } from 'native-base';
 import {
     AppRegistry,
     FlatList,
@@ -8,7 +9,7 @@ import {
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
 
-axios.defaults.baseURL = "http://192.168.0.8:3000";
+axios.defaults.baseURL = "http://127.0.0.1:3000";
 
 export default class app extends Component {
 
@@ -31,45 +32,54 @@ export default class app extends Component {
     }
 
     _renderItem = ({item}) => (
-        <View style={{
-            height: 100,
-            backgroundColor: "#dfd",
-            justifyContent: "center"
-        }}>
-            <Text style={{left:20}}>{item.title}</Text>
-            <Text style={{left:20}}>{item.ip}</Text>
-            <Switch
-                value={false}
-                onValueChange={(val) => {
-                    console.log(val);
-                    axios.post("/action", {
-                        ip:item.ip,
-                        status:val
-                    }).then(function(res){
-                        console.log(res.data);
-                    }).catch(function(err){
-                        console.log(err);
-                    });
-                }}
-                style={{left:20}}
-            />
-        </View>
+            <Grid>
+                <Col>
+                    <Text>{item.title}</Text>
+                </Col>
+                <Col>
+                    <Text>{item.ip}</Text>
+                </Col>
+                <Col>
+                    <Switch
+                        value={false}
+                        onValueChange={(val) => {
+			                console.log(val);
+			                axios.post("/action", {
+				                ip:item.ip,
+				                status:val
+			                }).then(function(res){
+				                console.log(res.data);
+			                }).catch(function(err){
+				                console.log(err);
+			                });
+		                }}
+                        style={{left:20}}
+                    />
+                </Col>
+            </Grid>
     )
 
     render() {
         const { state } = this;
         return (
-            <View style={{flex:1}}>
-                <FlatList
-                    data={state.switches}
-                    renderItem={this._renderItem}
-                    style={{
-                        flex:1,
-                        backgroundColor: '#fff',
-                        marginVertical: 20,
-                    }}
-                />
-            </View>
+            <Container>
+                <Header>
+                    <Body>
+                    <Title>Home Controller</Title>
+                    </Body>
+                </Header>
+                <Content>
+                    <FlatList
+                        data={state.switches}
+                        renderItem={this._renderItem}
+                        style={{
+                            flex:1,
+                            backgroundColor: '#fff',
+                        }}
+                    />
+                </Content>
+            </Container>
+
         );
     }
 }
