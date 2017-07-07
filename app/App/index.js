@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Content, Header, Left, Right, Body, Title, Button, Grid, Col } from 'native-base';
+import { Container, Content, Header, Left, Right, Body, Title, Button, Card, CardItem, Footer, FooterTab } from 'native-base';
 import {
     AppRegistry,
     FlatList,
@@ -32,31 +32,33 @@ export default class app extends Component {
     }
 
     _renderItem = ({item}) => (
-            <Grid>
-                <Col>
-                    <Text>{item.title}</Text>
-                </Col>
-                <Col>
-                    <Text>{item.ip}</Text>
-                </Col>
-                <Col>
-                    <Switch
-                        value={false}
-                        onValueChange={(val) => {
-			                console.log(val);
-			                axios.post("/action", {
-				                ip:item.ip,
-				                status:val
-			                }).then(function(res){
-				                console.log(res.data);
-			                }).catch(function(err){
-				                console.log(err);
-			                });
-		                }}
-                        style={{left:20}}
-                    />
-                </Col>
-            </Grid>
+		    <Card>
+			    <CardItem>
+				    <Left>
+					    <Text>{item.title}</Text>
+				    </Left>
+				    <Body>
+					    <Text>{item.ip}</Text>
+				    </Body>
+				    <Right>
+					    <Switch
+						    value={false}
+						    onValueChange={(val) => {
+							    console.log(val);
+							    axios.post("/action", {
+								    ip:item.ip,
+								    status:val
+							    }).then(function(res){
+								    console.log(res.data);
+							    }).catch(function(err){
+								    console.log(err);
+							    });
+						    }}
+						    style={{left:20}}
+					    />
+				    </Right>
+			    </CardItem>
+		    </Card>
     )
 
     render() {
@@ -65,7 +67,7 @@ export default class app extends Component {
             <Container>
                 <Header>
                     <Body>
-                    <Title>Home Controller</Title>
+	                    <Title>Home Controller</Title>
                     </Body>
                 </Header>
                 <Content>
@@ -78,6 +80,9 @@ export default class app extends Component {
                         }}
                     />
                 </Content>
+	            <Footer>
+		            <Text>Billy's Home Controller</Text>
+	            </Footer>
             </Container>
 
         );
