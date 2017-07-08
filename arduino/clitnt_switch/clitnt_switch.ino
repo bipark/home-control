@@ -9,7 +9,7 @@ const char* password = "1111111110";
 
 ESP8266WebServer server(80);
 WiFiClient client;
-IPAddress server1(192,168,0,8);
+IPAddress server1(192,168,0,10);
 
 const int led = 12;
 

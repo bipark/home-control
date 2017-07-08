@@ -32,33 +32,33 @@ export default class app extends Component {
     }
 
     _renderItem = ({item}) => (
-		    <Card>
-			    <CardItem>
-				    <Left>
-					    <Text>{item.title}</Text>
-				    </Left>
-				    <Body>
-					    <Text>{item.ip}</Text>
-				    </Body>
-				    <Right>
-					    <Switch
-						    value={false}
-						    onValueChange={(val) => {
-							    console.log(val);
-							    axios.post("/action", {
-								    ip:item.ip,
-								    status:val
-							    }).then(function(res){
-								    console.log(res.data);
-							    }).catch(function(err){
-								    console.log(err);
-							    });
-						    }}
-						    style={{left:20}}
-					    />
-				    </Right>
-			    </CardItem>
-		    </Card>
+        <Card>
+            <CardItem>
+                <Left>
+                    <Text>{item.title}</Text>
+                </Left>
+                <Body>
+                    <Text>{item.ip}</Text>
+                </Body>
+                <Right>
+                    <Switch
+                        value={false}
+                        onValueChange={(val) => {
+                            console.log(val);
+                            axios.post("/action", {
+                                ip:item.ip,
+                                status:val
+                            }).then(function(res){
+                                console.log(res.data);
+                            }).catch(function(err){
+                                console.log(err);
+                            });
+                        }}
+                        style={{left:20}}
+                    />
+                </Right>
+            </CardItem>
+        </Card>
     )
 
     render() {
