@@ -18,7 +18,7 @@
 
 # 앱구동화면
 
-![](https://github.com/bipark/home-control/docs/appscr1.png)
+![](https://raw.githubusercontent.com/bipark/home-control/master/docs/appscr1.png)
 
 # 추후 예정작업
 1. 원래는 앱을 실행하면 서버에서 디비이스의 상태를 모두 확인하고 현재 디바이스별 On/Off 상태를 앱에 전달해 줘야 하는데, 아두이노에 상태 확인 코드 까지는 넣어 놨는데 서버에서 확인하는 과정이 없습니다. (2017-7-8 완료)
