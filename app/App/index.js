@@ -9,7 +9,7 @@ import {
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
 
-axios.defaults.baseURL = "http://127.0.0.1:3000";
+axios.defaults.baseURL = "http://192.168.0.10:3000";
 
 export default class app extends Component {
 
@@ -42,7 +42,7 @@ export default class app extends Component {
                 </Body>
                 <Right>
                     <Switch
-                        value={false}
+                        value={item.status}
                         onValueChange={(val) => {
                             console.log(val);
                             axios.post("/action", {

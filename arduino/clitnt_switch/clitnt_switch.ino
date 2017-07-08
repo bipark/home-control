@@ -70,7 +70,7 @@ void setup(void){
     Serial.println("Connect OK........");
 
     char buffer[100];
-    sprintf(buffer, "GET /regist?number=1&ip=%s&name=CookieBox HTTP/1.0", WiFi.localIP().toString().c_str()); 
+    sprintf(buffer, "GET /regist?number=2&ip=%s&name=SecondSW HTTP/1.0", WiFi.localIP().toString().c_str()); 
     
     client.println(buffer);
     client.println();
