@@ -14,22 +14,7 @@ IPAddress server1(192,168,0,10);
 const int led = 12;
 
 void handleRoot() {
-  server.send(200, "text/plain", "Hello from esp8266!");
-}
-
-void handleNotFound(){
-  String message = "File Not Found\n\n";
-  message += "URI : ";
-  message += server.uri();
-  message += "\nMethod : ";
-  message += (server.method() == HTTP_GET)?"GET":"POST";
-  message += "\nArguments : ";
-  message += server.args();
-  message += "\n";
-  for (uint8_t i=0; i<server.args(); i++){
-    message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-  }
-  server.send(404, "text/plain", message);
+  server.send(200, "text/plain", "Hello from Billy");
 }
 
 void handleOn(){
@@ -70,6 +55,7 @@ void setup(void){
     Serial.println("Connect OK........");
 
     char buffer[100];
+    // 디바이스 스위치 번호 & 이름을 서버로 전송한다.
     sprintf(buffer, "GET /regist?number=2&ip=%s&name=SecondSW HTTP/1.0", WiFi.localIP().toString().c_str()); 
     
     client.println(buffer);
@@ -84,7 +70,6 @@ void setup(void){
   server.on("/on", handleOn);
   server.on("/off", handleOff);
   server.on("/status", handleStatus);
-  server.onNotFound(handleNotFound);
 
   server.begin();
   Serial.println("HTTP server started");
