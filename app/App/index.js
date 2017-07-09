@@ -12,7 +12,7 @@ export default class app extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            switches: null,
+            switches: [],
             refreshing: false,
         };
     };
@@ -24,7 +24,6 @@ export default class app extends Component {
     async _getData() {
         this.setState({refreshing:true});
         let data = await axios.get("/sw-lists");
-        console.log(data.data.switches);
         this.setState({
             switches: data.data.switches,
             refreshing:false
@@ -36,7 +35,6 @@ export default class app extends Component {
             ip:item.ip,
             status:val
         });
-        console.log(data);
     };
 
     _renderItem = ({item}) => (
