@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Content, Header, Left, Right, Body, Title, Button, Card, CardItem, Footer, FooterTab } from 'native-base';
+import { Container, Content, Header, Left, Right, Body, Title, Button, Card, CardItem, Footer, FooterTab, Grid, Col } from 'native-base';
 import {
     AppRegistry,
     FlatList,
     Text,
-    View
+    View,
+    RefreshControl
 } from 'react-native';
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
@@ -17,46 +18,49 @@ export default class app extends Component {
         super(props);
         this.state = {
             switches: null,
+            refreshing: false,
         };
     }
 
-    async getData() {
-        return axios.get("/sw-lists");
+    componentDidMount() {
+        this._getData();
     }
 
-    async componentDidMount() {
-        let data = await this.getData();
+    async _getData() {
+        this.setState({refreshing:true});
+        let data = await axios.get("/sw-lists");
         this.setState({
-            switches: data.data.switches
+            switches: data.data.switches,
+            refreshing:false
         });
     }
 
     _renderItem = ({item}) => (
         <Card>
             <CardItem>
-                <Left>
-                    <Text>{item.title}</Text>
-                </Left>
-                <Body>
-                    <Text>{item.ip}</Text>
-                </Body>
-                <Right>
-                    <Switch
-                        value={item.status}
-                        onValueChange={(val) => {
-                            console.log(val);
-                            axios.post("/action", {
-                                ip:item.ip,
-                                status:val
-                            }).then(function(res){
-                                console.log(res.data);
-                            }).catch(function(err){
-                                console.log(err);
-                            });
-                        }}
-                        style={{left:20}}
-                    />
-                </Right>
+                <Content>
+                    <Grid>
+                        <Col>
+                            <Text>{item.title}</Text>
+                            <Text>{item.ip}</Text>
+                        </Col>
+                        <Col>
+                            <Switch
+                                value={item.status}
+                                onValueChange={(val) => {
+                                    axios.post("/action", {
+                                        ip:item.ip,
+                                        status:val
+                                    }).then(function(res){
+                                        console.log(res.data);
+                                    }).catch(function(err){
+                                        console.log(err);
+                                    });
+                                }}
+                            />
+                        </Col>
+                    </Grid>
+                </Content>
             </CardItem>
         </Card>
     )
@@ -70,8 +74,14 @@ export default class app extends Component {
 	                    <Title>Home Controller</Title>
                     </Body>
                 </Header>
-                <Content>
+                <Content refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.getData}
+                    />
+                }>
                     <FlatList
+                        ref={(r) => {this.self = r;}}
                         data={state.switches}
                         renderItem={this._renderItem}
                         style={{
