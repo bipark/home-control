@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Content, Header, Left, Right, Body, Title, Button, Card, CardItem, Footer, FooterTab, Grid, Col } from 'native-base';
-import {
-    AppRegistry,
-    FlatList,
-    Text,
-    View,
-    RefreshControl
-} from 'react-native';
+import { Text, FlatList, View, RefreshControl } from 'react-native';
 import axios from 'axios';
 import { Switch } from 'react-native-switch';
+import css from './css';
 
 axios.defaults.baseURL = "http://192.168.0.10:3000";
 
@@ -20,20 +15,29 @@ export default class app extends Component {
             switches: null,
             refreshing: false,
         };
-    }
+    };
 
     componentDidMount() {
         this._getData();
-    }
+    };
 
     async _getData() {
         this.setState({refreshing:true});
         let data = await axios.get("/sw-lists");
+        console.log(data.data.switches);
         this.setState({
             switches: data.data.switches,
             refreshing:false
         });
-    }
+    };
+
+    async _setSwitch(item, val) {
+        let data = await axios.post("/action",{
+            ip:item.ip,
+            status:val
+        });
+        console.log(data);
+    };
 
     _renderItem = ({item}) => (
         <Card>
@@ -44,26 +48,17 @@ export default class app extends Component {
                             <Text>{item.title}</Text>
                             <Text>{item.ip}</Text>
                         </Col>
-                        <Col>
+                        <Col style={css.switch}>
                             <Switch
-                                value={item.status}
-                                onValueChange={(val) => {
-                                    axios.post("/action", {
-                                        ip:item.ip,
-                                        status:val
-                                    }).then(function(res){
-                                        console.log(res.data);
-                                    }).catch(function(err){
-                                        console.log(err);
-                                    });
-                                }}
+                                value={(item.status === 1)}
+                                onValueChange={(val) => {this._setSwitch(item, val)}}
                             />
                         </Col>
                     </Grid>
                 </Content>
             </CardItem>
         </Card>
-    )
+    );
 
     render() {
         const { state } = this;
@@ -81,12 +76,11 @@ export default class app extends Component {
                     />
                 }>
                     <FlatList
-                        ref={(r) => {this.self = r;}}
+                        keyExtractor={(item, index) => item.id}
                         data={state.switches}
                         renderItem={this._renderItem}
                         style={{
-                            flex:1,
-                            backgroundColor: '#fff',
+                            flex:css.viewport,
                         }}
                     />
                 </Content>
@@ -97,5 +91,7 @@ export default class app extends Component {
 
         );
     }
+
+
 }
 
