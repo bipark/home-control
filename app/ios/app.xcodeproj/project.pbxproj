@@ -1045,6 +1045,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rtlink.home1;
 				PRODUCT_NAME = app;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1064,6 +1065,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rtlink.home1;
 				PRODUCT_NAME = app;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
